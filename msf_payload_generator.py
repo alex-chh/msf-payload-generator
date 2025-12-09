@@ -136,23 +136,28 @@ class MSFPayloadGenerator:
         print("\n🎯 選擇 Payload 類型:")
         print("=" * 50)
         
-        # 分組顯示 payloads
-        categories = {
-            "Meterpreter TCP": [p for p in payload_types if 'meterpreter' in p and ('tcp' in p and 'http' not in p and 'https' not in p)],
-            "Meterpreter HTTP/S": [p for p in payload_types if 'meterpreter' in p and ('http' in p or 'https' in p)],
-            "Shell TCP": [p for p in payload_types if 'shell' in p and ('tcp' in p and 'http' not in p and 'https' not in p)],
-            "Stageless": [p for p in payload_types if '_' in p and not p.startswith(('linux', 'windows'))],
-            "平台特定": [p for p in payload_types if p.startswith(('linux', 'windows', 'android', 'php', 'python', 'java')) 
-                       and not any(x in p for x in ['meterpreter', 'shell', '_'])]
-        }
-        
+        categories_order = [
+            ("平台特定", [p for p in payload_types if p.startswith(('linux', 'windows', 'android', 'php', 'python', 'java'))]),
+            ("Meterpreter TCP", [p for p in payload_types if 'meterpreter' in p and ('tcp' in p and 'http' not in p and 'https' not in p)]),
+            ("Meterpreter HTTP/S", [p for p in payload_types if 'meterpreter' in p and ('http' in p or 'https' in p)]),
+            ("Shell TCP", [p for p in payload_types if 'shell' in p and ('tcp' in p and 'http' not in p and 'https' not in p)]),
+            ("Stageless", [p for p in payload_types if '_' in p])
+        ]
+
+        seen = set()
         all_payloads = []
-        for category, payloads in categories.items():
+        for category, payloads in categories_order:
             print(f"\n📁 {category}:")
             print("-" * 30)
-            for i, ptype in enumerate(payloads, len(all_payloads) + 1):
-                print(f"{i}. {ptype}")
-                all_payloads.append(ptype)
+            displayed = False
+            for ptype in payloads:
+                if ptype not in seen:
+                    print(f"{len(all_payloads) + 1}. {ptype}")
+                    all_payloads.append(ptype)
+                    seen.add(ptype)
+                    displayed = True
+            if not displayed:
+                print("(無)")
         
         payload_choice = self.get_choice_input("\n請選擇 Payload 類型編號: ", len(all_payloads))
         self.payload_config['payload_type'] = all_payloads[payload_choice - 1]
