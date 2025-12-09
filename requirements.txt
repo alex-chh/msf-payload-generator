@@ -1,33 +1,33 @@
-# MSFVenom Payload Generator - 依賴套件
-# 專為滲透測試自動化設計的 Python 工具
+# MSFVenom Payload Generator - Dependencies
+# Python tool designed for automating Metasploit payload generation
 
-# 核心依賴
+# Core
 python>=3.8.0
 
-# 標準庫依賴 (無需額外安裝)
+# Standard library (no extra install)
 # subprocess, os, sys, json, typing
 
-# 開發和測試依賴 (可選)
+# Dev and test (optional)
 pytest>=7.0.0
 black>=22.0.0
 flake8>=4.0.0
 mypy>=0.900
 
-# 遠端執行依賴 (系統級)
-# openssh-client (SSH/SCP 支持)
+# Remote execution (system-level)
+# openssh-client (SSH/SCP support)
 # metasploit-framework (msfvenom)
 
-# 可選功能依賴
-paramiko>=2.0.0  # 高級 SSH 支持 (未來版本)
-scp>=0.14.0      # SCP 協議支持 (未來版本)
+# Optional features
+# paramiko>=2.0.0  # advanced SSH support (future)
+# scp>=0.14.0      # SCP protocol support (future)
 
-# 文檔生成依賴
+# Docs
 sphinx>=4.0.0
 sphinx-rtd-theme>=1.0.0
 
-# 打包依賴
+# Packaging
 setuptools>=60.0.0
 twine>=4.0.0
 
-# 註: 本工具主要依賴系統工具 (msfvenom, ssh, scp)
-# Python 層面僅使用標準庫，確保最大兼容性
+# Note: this tool primarily relies on system utilities (msfvenom, ssh, scp)
+# Python code uses only the standard library to maximize compatibility

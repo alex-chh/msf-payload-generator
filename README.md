@@ -1,163 +1,149 @@
-# 🚀 MSFVenom Payload Generator
+# MSFVenom Payload Generator
 
-[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
-[![Metasploit](https://img.shields.io/badge/Metasploit-Framework-red)](https://www.metasploit.com/)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
-[![GitHub](https://img.shields.io/badge/GitHub-alex--chh-blue)](https://github.com/alex-chh)
+Interactive command-line tool for generating Metasploit payloads and handler configurations. Built for penetration testers and security researchers.
 
-**高級 Metasploit Payload 生成工具** - 專為滲透測試人員和安全研究人員設計的互動式命令行工具，提供完整的 payload 生成和 listener 配置自動化功能。
+## Features
 
-## ✨ 功能特色
+### Payload generation
+- 30+ payload types (Meterpreter, Shell, stageless)
+- Cross-platform support: Windows, Linux, Android, macOS, PHP, Python, Java
+- x86 and x64 architectures
+- Category-based listing for faster selection
 
-### 🎯 智能 Payload 生成
-- ✅ **30+ 種 payload 類型**支援（Meterpreter、Shell、Stageless）
-- ✅ **跨平台支援**: Windows、Linux、Android、macOS、PHP、Python、Java
-- ✅ **多重架構**: x86、x64 完整支援
-- ✅ **智能分組顯示**: 按類別分類，方便選擇
+### Encoders
+- 30+ encoders (e.g., Shikata Ga Nai, Alpha Mixed, XOR)
+- Encoder chaining supported
+- Configurable iteration count
+- Grouped by architecture and type
 
-### 🔒 高級編碼技術
-- ✅ **30+ 種編碼器**: Shikata Ga Nai、Alpha Mixed、XOR 等
-- ✅ **多重編碼技術**: 支援 encoder chaining
-- ✅ **可調迭代次數**: 1-∞ 次編碼迭代
-- ✅ **編碼器分類系統**: 按架構和類型智能分組
+### Remote execution
+- SSH execution on a remote Kali server
+- Automatic SCP download after generation
+- Local/remote execution switch
+- Connection validation
 
-### 🌐 遠端執行能力
-- ✅ **SSH 遠端連線**: 直接在 Kali server 執行 msfvenom
-- ✅ **自動 SCP 下載**: 生成後自動下載 payload 檔案
-- ✅ **雙模式執行**: 本地/遠端執行無縫切換
-- ✅ **連接驗證**: 自動檢測 SSH 連接狀態
+### Automation
+- Generates Metasploit handler `rc` files
+- Complete handler configuration
+- Ready-to-run commands
+- Configuration summary before generation
 
-### 📋 自動化配置
-- ✅ **自動 Listener 配置**: 生成 Metasploit RC 檔案
-- ✅ **完整 handler 設置**: 多重 session 管理配置
-- ✅ **一鍵啟動命令**: 提供直接執行指令
-- ✅ **配置摘要顯示**: 生成前確認所有參數
-
-## 🛠 技術架構
+## Architecture
 
 ```python
-# 核心類別結構
 MSFPayloadGenerator
-├── check_msfvenom()          # 環境檢測與驗證
-├── get_user_input()          # 互動式配置收集
-├── generate_payload()        # Payload 生成引擎
-├── generate_listener_config() # Listener 配置生成
-└── run()                     # 主執行流程控制
+├── check_msfvenom()          
+├── get_user_input()          
+├── generate_payload()        
+├── generate_listener_config()
+└── run()                     
 ```
 
-## 📦 安裝與使用
+## Installation and Usage
 
-### 環境要求
+### Requirements
 - Python 3.8+
-- Metasploit Framework (msfvenom)
-- SSH 客戶端 (可選，用於遠端執行)
+- Metasploit Framework (`msfvenom`)
+- SSH client (optional, for remote execution)
 
-### 快速開始
+### Quick start
 ```bash
-# 克隆專案
 git clone https://github.com/alex-chh/msf-payload-generator.git
 cd msf-payload-generator
 
-# 執行工具
 python msf_payload_generator.py
 ```
 
-### 使用範例
+### Example
 ```bash
-# 本地生成 Windows Meterpreter payload
-? 選擇平台: windows
-? 選擇架構: x64  
-? 選擇 Payload: meterpreter/reverse_tcp
+? Platform: windows
+? Architecture: x64
+? Payload: meterpreter/reverse_tcp
 ? LHOST: 192.168.1.100
 ? LPORT: 4444
-? 輸出格式: exe
-? 編碼器: x86/shikata_ga_nai (迭代3次)
+? Output format: exe
+? Encoder: x86/shikata_ga_nai (3 iterations)
 
-# 自動生成 listener.rc 並提供啟動命令
 msfconsole -r listener.rc
 ```
 
-## 🎯 支援的 Payload 類型
+## Supported payloads
 
-### Meterpreter Payloads
-- `meterpreter/reverse_tcp` - 標準反向連接
-- `meterpreter/reverse_http` - HTTP 協議傳輸
-- `meterpreter/reverse_https` - HTTPS 加密傳輸
-- `meterpreter/reverse_tcp_ssl` - SSL 加密連接
+### Meterpreter
+- `meterpreter/reverse_tcp` - Reverse TCP
+- `meterpreter/reverse_http` - Reverse HTTP
+- `meterpreter/reverse_https` - Reverse HTTPS
+- `meterpreter/reverse_tcp_ssl` - Reverse TCP over SSL
 - `meterpreter/reverse_winhttp` - Windows HTTP
 - `meterpreter/reverse_winhttps` - Windows HTTPS
 
-### Shell Payloads
-- `shell/reverse_tcp` - 標準反向 Shell
-- `shell/bind_tcp` - 綁定式 Shell
-- `shell/reverse_http` - HTTP Shell
-- `shell/reverse_https` - HTTPS Shell
+### Shell
+- `shell/reverse_tcp` - Reverse TCP shell
+- `shell/bind_tcp` - Bind TCP shell
+- `shell/reverse_http` - Reverse HTTP shell
+- `shell/reverse_https` - Reverse HTTPS shell
 
-### Stageless Payloads
-- `meterpreter_reverse_tcp` - 無階段 Meterpreter
-- `meterpreter_reverse_http` - 無階段 HTTP
-- `meterpreter_reverse_https` - 無階段 HTTPS
+### Stageless
+- `meterpreter_reverse_tcp`
+- `meterpreter_reverse_http`
+- `meterpreter_reverse_https`
 
-### 平台特定 Payloads
-- **Windows**: x86/x64 Meterpreter/Shell
-- **Linux**: x86/x64 Meterpreter/Shell  
-- **Android**: Meterpreter HTTP/HTTPS
-- **Web**: PHP/Python/Java Payloads
+### Platform-specific
+- Windows: x86/x64 Meterpreter/Shell
+- Linux: x86/x64 Meterpreter/Shell
+- Android: Meterpreter HTTP/HTTPS
+- Web: PHP/Python/Java
 
-## 🔧 編碼器系統
+## Encoders
 
-### x86 編碼器
-- `x86/shikata_ga_nai` - 多態編碼（經典）
-- `x86/alpha_mixed` - 字母混合編碼
-- `x86/alpha_upper` - 大寫字母編碼
-- `x86/xor` - XOR 編碼
-- `x86/unicode_mixed` - Unicode 混合
+### x86
+- `x86/shikata_ga_nai` - Polymorphic encoder
+- `x86/alpha_mixed`
+- `x86/alpha_upper`
+- `x86/xor`
+- `x86/unicode_mixed`
 
-### x64 編碼器  
-- `x64/xor` - 64位 XOR 編碼
-- `x64/xor_dynamic` - 動態 XOR
-- `x64/zutto_dekiru` - 日語編碼器
+### x64
+- `x64/xor`
+- `x64/xor_dynamic`
+- `x64/zutto_dekiru`
 
-### 多重編碼組合
+### Chained examples
 - `x86/shikata_ga_nai + x86/alpha_upper`
 - `x86/shikata_ga_nai + x86/xor`
 - `x86/shikata_ga_nai + x64/xor`
 
-## 🌐 遠端執行模式
+## Remote execution
 
-### SSH 連接配置
+### SSH configuration
 ```bash
-# 自動偵測遠端 Kali 環境
-? SSH 主機: 192.168.1.200
-? SSH 用戶: kali
-? 密碼/金鑰: [自動驗證]
+? SSH host: 192.168.1.200
+? SSH user: kali
+? Password/key: [validated]
 
-# 在遠端執行 msfvenom 並下載結果
-✅ 遠端執行成功
-✅ Payload 下載完成: payload.exe
+Remote generation and file download supported via SSH/SCP.
 ```
 
-### 優勢特性
-- 🔒 **安全傳輸**: 使用 SSH 加密通道
-- ⚡ **效能優化**: 遠端執行節省本地資源
-- 🔄 **自動重試**: 網絡異常自動重連
-- 📊 **進度顯示**: 即時顯示執行狀態
+### Advantages
+- Encrypted transport over SSH
+- Offload local resources
+- Automatic retry on transient errors
+- Live execution status
 
-## 📊 輸出格式支援
+## Output formats
 
-| 平台 | 支援格式 | 說明 |
+| Platform | Formats | Notes |
 |------|----------|------|
-| Windows | exe, dll, psh | 可執行檔、DLL、PowerShell |
-| Linux | elf, so | ELF 可執行檔、共享庫 |
-| Android | apk | Android 應用包 |
-| Web | php, py | PHP/Python 腳本 |
-| macOS | macho | Mach-O 可執行檔 |
+| Windows | exe, dll, psh | Executable, DLL, PowerShell |
+| Linux | elf, so | ELF executable, shared library |
+| Android | apk | Android package |
+| Web | php, py | PHP/Python scripts |
+| macOS | macho | Mach-O executable |
 
-## 🚀 進階功能
+## Advanced
 
-### 自動化整合
+### Programmatic usage
 ```python
-# 程式化調用示例
 from msf_payload_generator import MSFPayloadGenerator
 
 generator = MSFPayloadGenerator()
@@ -175,142 +161,133 @@ generator.generate_payload()
 generator.generate_listener_config()
 ```
 
-### 批量處理
-支援通過配置文件批量生成多個 payload，適合紅隊行動中的多目標攻擊。
+### Batch generation
+Supports generating multiple payloads via configuration files.
 
-### 日誌記錄
-完整的執行日誌記錄，便於審計和故障排除。
+### Logging
+Complete execution logs for auditing and troubleshooting.
 
-## 🧩 相容性指南
+## Compatibility Guide
 
-### 平台前綴的 Payload 規則
-- 當選擇的 `payload_type` 已包含平台前綴（例如 `windows/x64/meterpreter/reverse_https`、`linux/x64/shell/reverse_tcp`），生成命令會直接使用該值，不會再拼接 `platform/arch`，避免出現 `windows/x64/windows/...` 的錯誤。
-- 對應程式位置：`msf_payload_generator.py:302`、`msf_payload_generator.py:387`。
+### Payload with platform prefixes
+- If the selected `payload_type` already contains a platform prefix (e.g., `windows/x64/meterpreter/reverse_https`, `linux/x64/shell/reverse_tcp`), the generator uses it directly and does not prepend `platform/arch` again.
 
-### 編碼器相容性準則
-- 目標架構為 `x86` 時：優先使用 `x86/*` 編碼器；`x64/*` 與其他架構編碼器（`ppc/`、`sparc/`、`mips*`）視為不相容。
-- 目標架構為 `x64` 時：優先使用 `x64/*` 編碼器；`x86/*` 與其他架構編碼器視為不相容。
-- 通用編碼器（`generic/*`、`cmd/*`、`php/*`）視為跨架構可用。
-- 多重編碼（`a + b`）需各編碼器皆相容才視為相容；否則會提示並允許改選。
-- 對應程式位置：`msf_payload_generator.py:208-221`（判斷）、`msf_payload_generator.py:223-279`（推薦與回退）。
+### Encoder compatibility
+- For `x86` targets, prefer `x86/*` encoders; `x64/*` and other architectures (`ppc/`, `sparc/`, `mips*`) are incompatible.
+- For `x64` targets, prefer `x64/*` encoders; `x86/*` and other architectures are incompatible.
+- Generic encoders (`generic/*`, `cmd/*`, `php/*`) are cross-architecture.
+- Chained encoders (`a + b`) are considered compatible only if each encoder is compatible.
 
-### 推薦分組與回退行為
-- 在編碼器選擇流程中，會先列出「推薦（相容於目標架構）」分組，其後再列出其他分組，空分組顯示 `(無)`。
-- 若選到不相容編碼器，系統會提示並提供從「推薦」清單改選的選項；若沒有相容選項則回退為不使用編碼器繼續流程。
+### Grouping and fallback
+- The encoder selection lists a "Recommended (compatible)" section first, followed by other groups. Empty groups show `(none)`.
+- Selecting an incompatible encoder triggers guidance to reselect from the recommended list; if none exist, it falls back to no encoder.
 
-### 常見錯誤與修正
-- 錯誤：`Error: invalid payload: windows/x64/windows/meterpreter/reverse_https`
-  - 原因：同時選了平台前綴型 payload，且程式又拼接了 `platform/arch`。
-  - 修正：自動檢測平台前綴並直接使用；已在生成命令與 listener 設定同步修正。
-  - 對應程式位置：`msf_payload_generator.py:302-310`、`msf_payload_generator.py:387-397`。
+### Common errors
+- `Error: invalid payload: windows/x64/windows/meterpreter/reverse_https` occurs if both a platform-prefixed payload is selected and `platform/arch` is concatenated again. The generator now detects and uses the prefixed payload directly in both the command and handler config.
 
-## 🔒 安全最佳實踐
+## Security best practices
 
-### 輸入驗證
-- ✅ 所有用戶輸入均經過驗證和過濾
-- ✅ 防止命令注入攻擊
-- ✅ 路徑遍歷保護
+### Input validation
+- Validates and sanitizes all user input
+- Protects against command injection
+- Prevents path traversal
 
-### 執行安全
-- ✅ 超時控制防止無限執行
-- ✅ 資源使用限制
-- ✅ 錯誤處理和日誌記錄
+### Execution safety
+- Timeout control prevents hanging processes
+- Resource usage limits
+- Error handling and logging
 
-### 傳輸安全
-- ✅ SSH 加密傳輸
-- ✅ 檔案權限管理
-- ✅ 敏感信息保護
+### Transport security
+- SSH encrypted transfer
+- File permission management
+- Sensitive data protection
 
-## 📈 效能表現
+## Performance
 
-### 生成速度
-| Payload 類型 | 本地執行 | 遠端執行 |
-|-------------|---------|---------|
-| Windows exe | ~2-3秒 | ~5-8秒 |
-| Linux elf | ~1-2秒 | ~3-5秒 |
-| Android apk | ~10-15秒 | ~15-25秒 |
+### Generation speed
+| Payload type | Local | Remote |
+|--------------|-------|--------|
+| Windows exe  | ~2–3s | ~5–8s  |
+| Linux elf    | ~1–2s | ~3–5s  |
+| Android apk  | ~10–15s | ~15–25s |
 
-### 資源使用
-- 記憶體佔用: < 50MB
-- CPU 使用率: < 5%
-- 網絡帶寬: 最小化傳輸
+### Resource usage
+- Memory: < 50MB
+- CPU: < 5%
+- Network: minimal transfer
 
-## 🛠 開發與貢獻
+## Development and contribution
 
-### 專案結構
+### Project structure
 ```
 msf-payload-generator/
-├── msf_payload_generator.py  # 主程式
-├── requirements.txt          # 依賴套件
-├── README.md                 # 說明文件
-├── examples/                 # 使用範例
+├── msf_payload_generator.py
+├── requirements.txt
+├── README.md
+├── examples/
 │   ├── windows_payload.exe
 │   └── listener.rc
-├── tests/                    # 測試用例
+├── tests/
 │   ├── test_generator.py
 │   └── test_configs.py
-└── docs/                     # 技術文檔
+└── docs/
     ├── payload_types.md
     └── encoders_guide.md
 ```
 
-### 開發指南
-1. Fork 本專案
-2. 創建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 開啟 Pull Request
+### Contribution guide
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-### 測試
+### Tests
 ```bash
-# 運行單元測試
 python -m pytest tests/
 
-# 運行整合測試  
 python tests/integration_test.py
 ```
 
-## 📝 版本歷史
+## Version history
 
 ### v1.0.0 (2024-12-08)
-- ✅ 初始版本發布
-- ✅ 基礎 payload 生成功能
-- ✅ 互動式命令行界面
-- ✅ Listener 配置自動生成
-- ✅ 遠端執行支援
+- Initial release
+- Basic payload generation
+- Interactive CLI
+- Handler config generation
+- Remote execution support
 
-## 🤝 貢獻者
+## Contributors
 
-- **Alex Chen** - [alex-chh](https://github.com/alex-chh) - 專案創建者和維護者
+- **Alex Chen** - [alex-chh](https://github.com/alex-chh) - creator and maintainer
 
-歡迎提交 Issue 和 Pull Request！
+Issues and Pull Requests are welcome.
 
-## 📜 許可證
+## License
 
-本專案採用 MIT 許可證 - 詳見 [LICENSE](LICENSE) 文件。
+MIT License — see [LICENSE](LICENSE).
 
-## 🙏 致謝
+## Acknowledgements
 
-- **Metasploit Framework** 團隊提供強大的滲透測試工具
-- **Python 社區** 提供優秀的開發生態
-- **安全研究社區** 的持續貢獻和反饋
+- Metasploit Framework team
+- Python community
+- Security research community
 
-## 🔗 相關專案
+## Related projects
 
-- [pentest-automation-framework-2025](https://github.com/alex-chh/pentest-automation-framework-2025) - 滲透測試自動化框架
-- [sliver-c2-dropper](https://github.com/alex-chh/sliver-c2-dropper) - Sliver C2 Agent Dropper
-- [vba-red-team-testing-framework](https://github.com/alex-chh/vba-red-team-testing-framework) - VBA 紅隊測試框架
+- [pentest-automation-framework-2025](https://github.com/alex-chh/pentest-automation-framework-2025)
+- [sliver-c2-dropper](https://github.com/alex-chh/sliver-c2-dropper)
+- [vba-red-team-testing-framework](https://github.com/alex-chh/vba-red-team-testing-framework)
 
-## 📞 支持與反饋
+## Support
 
-如果您遇到任何問題或有建議，請通過以下方式聯繫：
+If you encounter issues or have suggestions:
 
-- 🐛 [提交 Issue](https://github.com/alex-chh/msf-payload-generator/issues)
-- 💬 [討論區](https://github.com/alex-chh/msf-payload-generator/discussions)
-- 📧 郵件: [專案維護者](mailto:)
+- [Open an Issue](https://github.com/alex-chh/msf-payload-generator/issues)
+- [Discussions](https://github.com/alex-chh/msf-payload-generator/discussions)
+- Email: [maintainer](mailto:)
 
 ---
 
-**⭐ 如果這個專案對您有幫助，請給它一個 Star！**
-
-[![Star History Chart](https://api.star-history.com/svg?repos=alex-chh/msf-payload-generator&type=Date)](https://star-history.com/#alex-chh/msf-payload-generator&Date)
+If this project helps you, consider starring the repository.
