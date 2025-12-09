@@ -181,6 +181,29 @@ generator.generate_listener_config()
 ### 日誌記錄
 完整的執行日誌記錄，便於審計和故障排除。
 
+## 🧩 相容性指南
+
+### 平台前綴的 Payload 規則
+- 當選擇的 `payload_type` 已包含平台前綴（例如 `windows/x64/meterpreter/reverse_https`、`linux/x64/shell/reverse_tcp`），生成命令會直接使用該值，不會再拼接 `platform/arch`，避免出現 `windows/x64/windows/...` 的錯誤。
+- 對應程式位置：`msf_payload_generator.py:302`、`msf_payload_generator.py:387`。
+
+### 編碼器相容性準則
+- 目標架構為 `x86` 時：優先使用 `x86/*` 編碼器；`x64/*` 與其他架構編碼器（`ppc/`、`sparc/`、`mips*`）視為不相容。
+- 目標架構為 `x64` 時：優先使用 `x64/*` 編碼器；`x86/*` 與其他架構編碼器視為不相容。
+- 通用編碼器（`generic/*`、`cmd/*`、`php/*`）視為跨架構可用。
+- 多重編碼（`a + b`）需各編碼器皆相容才視為相容；否則會提示並允許改選。
+- 對應程式位置：`msf_payload_generator.py:208-221`（判斷）、`msf_payload_generator.py:223-279`（推薦與回退）。
+
+### 推薦分組與回退行為
+- 在編碼器選擇流程中，會先列出「推薦（相容於目標架構）」分組，其後再列出其他分組，空分組顯示 `(無)`。
+- 若選到不相容編碼器，系統會提示並提供從「推薦」清單改選的選項；若沒有相容選項則回退為不使用編碼器繼續流程。
+
+### 常見錯誤與修正
+- 錯誤：`Error: invalid payload: windows/x64/windows/meterpreter/reverse_https`
+  - 原因：同時選了平台前綴型 payload，且程式又拼接了 `platform/arch`。
+  - 修正：自動檢測平台前綴並直接使用；已在生成命令與 listener 設定同步修正。
+  - 對應程式位置：`msf_payload_generator.py:302-310`、`msf_payload_generator.py:387-397`。
+
 ## 🔒 安全最佳實踐
 
 ### 輸入驗證
