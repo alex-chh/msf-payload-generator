@@ -214,7 +214,7 @@ class MSFPayloadGenerator:
             for p in parts:
                 if p.startswith('x86/') and target_arch != 'x86':
                     return False
-                if p.startswith('x64/') and target_arch != 'x64'):
+                if p.startswith('x64/') and target_arch != 'x64':
                     return False
                 if p.startswith(('ppc/', 'sparc/', 'mipsbe/', 'mipsle/')):
                     return False
